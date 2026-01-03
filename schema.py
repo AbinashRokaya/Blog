@@ -1,8 +1,11 @@
 from pydantic import BaseModel,EmailStr,field_validator,ValidationError
 import re
+from enum import Enum
+from typing import List
 
 class RegisterRequest(BaseModel):
     name:str=None
+   
     address:str=None
     email:EmailStr=None
     password:str=None
@@ -32,3 +35,19 @@ class Token(BaseModel):
 
 class PostRequest(BaseModel):
     content:str
+    title:str
+    category:str
+
+# class category_schema(str,Enum):
+class LikeRequest(BaseModel):
+    post_id:int=None
+ 
+class CommentRequest(BaseModel):
+    post_id:int=None
+    content:str=None
+
+class Comment_Schema(BaseModel):
+    comment:str
+    user_name:str
+class CommentResponse(BaseModel):
+    comment_list:List[Comment_Schema]
