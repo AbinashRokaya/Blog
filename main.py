@@ -235,6 +235,14 @@ def get_comment(post_id:int,db:db_dependancy,current_user=Depends(require_permis
 
     return {"total_comment":len(comment)}
 
+@app.get("/user/search/{user_name}")
+def search_user(user_name:str,db:db_dependancy,current_user=Depends(require_permission('search'))):
+    user=db.query(Register).filter(Register.name.like(f"%{user_name}%")).all()
+
+    if not user:
+        raise HTTPException(404,detail="user Not found")
+    
+    return user
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=9000, reload=True)

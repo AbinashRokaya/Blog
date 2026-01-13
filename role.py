@@ -11,7 +11,7 @@ class Role_Schema(str,Enum):
 
 Permission_ROLE = {
 Role_Schema.User: {"view"},
-Role_Schema.Admin: {"view", "edit","write","delete"},
+Role_Schema.Admin: {"view", "edit","write","delete","search"},
 Role_Schema.Author: {"view", "edit","write","delete"}  # ✅ fixed
 }
 
