@@ -5,7 +5,7 @@ from datetime import timedelta,datetime,timezone
 
 SECRET_KEY = "c5b565981ec34e5b1192662a9d43c63dee6eef672712269ee459d3dc6a473972"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 1
 
 
 def create_access_token(subject: str,

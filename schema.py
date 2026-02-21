@@ -1,7 +1,8 @@
 from pydantic import BaseModel,EmailStr,field_validator,ValidationError
 import re
 from enum import Enum
-from typing import List
+from typing import List,Optional
+from role import Role_Schema
 
 class RegisterRequest(BaseModel):
     name:str=None
@@ -51,3 +52,7 @@ class Comment_Schema(BaseModel):
     user_name:str
 class CommentResponse(BaseModel):
     comment_list:List[Comment_Schema]
+
+class UserRoleRequest(BaseModel):
+    role:Role_Schema=None
+    email:EmailStr=None

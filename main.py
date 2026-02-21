@@ -2,7 +2,7 @@ from fastapi import FastAPI,Depends,status,HTTPException,Response
 import uvicorn
 from auth import oauth2_schema
 from typing import Annotated
-from schema import RegisterRequest,LoginRequest,PostRequest,LikeRequest,CommentRequest,CommentResponse,Comment_Schema
+from schema import RegisterRequest,LoginRequest,PostRequest,LikeRequest,CommentRequest,CommentResponse,Comment_Schema,UserRoleRequest
 from model import Register,Posts,CategoryModel,PostCategoryModel,LikeModel,CommentModel
 from database import engine,Base,db_dependancy
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,6 +15,7 @@ from sqlalchemy import and_,or_
 app=FastAPI()
 
 origins = [
+    "http://localhost:5173",
     "http://127.0.0.1:5501",  # frontend
     "http://localhost:5501",
 ]
@@ -243,6 +244,24 @@ def search_user(user_name:str,db:db_dependancy,current_user=Depends(require_perm
         raise HTTPException(404,detail="user Not found")
     
     return user
+
+@app.patch("/user/role_user")
+def user_role(role_request:UserRoleRequest,db:db_dependancy,current_user=Depends(require_permission('search'))):
+    user=db.query(Register).filter(Register.email==role_request.email).first()
+    if not user:
+        raise HTTPException(404,detail="user Not found")
+    new_role=Register(
+        role=role_request.role
+    )
+    user.role=role_request.role
+    db.commit()
+    db.refresh(user)
+
+    return {
+        "msg":"new role is update"
+    }
+    
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=9000, reload=True)
