@@ -16,8 +16,9 @@ app=FastAPI()
 
 origins = [
     "http://localhost:5173",
-    "http://127.0.0.1:5501",  # frontend
+    "http://127.0.0.1:5501",
     "http://localhost:5501",
+    "https://your-frontend.onrender.com",  # add this
 ]
 
 Base.metadata.create_all(bind=engine)
@@ -44,8 +45,8 @@ def login(form_data:Annotated[OAuth2PasswordRequestForm,Depends()],db:db_dependa
             value=access_token, 
             httponly=True,   
             max_age=3600,    
-            samesite="lax",  # Keep as lax for local dev
-            secure=False,    # Keep false for HTTP local dev
+            samesite="none",   # change from "lax" to "none" for cross-origin
+            secure=True,       # Keep false for HTTP local dev
             path="/",        # Ensure cookie is valid for all paths
         )
         user_detail={
@@ -262,6 +263,5 @@ def user_role(role_request:UserRoleRequest,db:db_dependancy,current_user=Depends
     }
     
 
-
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=9000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=False)

@@ -2,10 +2,11 @@ import jwt
 from jwt.exceptions import InvalidTokenError
 from schema import Token
 from datetime import timedelta,datetime,timezone
+import os
 
-SECRET_KEY = "c5b565981ec34e5b1192662a9d43c63dee6eef672712269ee459d3dc6a473972"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 
 def create_access_token(subject: str,
